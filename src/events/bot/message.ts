@@ -46,7 +46,7 @@ class EventBot extends ExtendedEvent {
 		}
 
 		try {
-			await client.editMessageText(`AI: ${response}`, loaderMessage);
+			await client.editMessageText(response, loaderMessage);
 		} catch (error: unknown) {
 			const { message } = error as Error;
 
