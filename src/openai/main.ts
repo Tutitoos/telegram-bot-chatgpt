@@ -15,7 +15,7 @@ export const generateResponse = async (
 	category: string,
 ): Promise<string | null> => {
 	try {
-		const prompt = `Idioma: Español\nCategory: ${category}\nHuman: ${message}\nAI:`;
+		const prompt = `Idioma: Español\nCategory: ${category}\nHuman: ${message}\n`;
 		const response = await openai.createCompletion({
 			model: "text-davinci-003",
 			prompt,
@@ -23,7 +23,7 @@ export const generateResponse = async (
 			max_tokens: 150,
 			frequency_penalty: 0.5,
 			presence_penalty: 0.5,
-			stop: [" Human:", " AI:"],
+			stop: [" Human:"],
 		});
 
 		const responseData = response.data;
