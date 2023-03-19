@@ -32,8 +32,6 @@ export const generateResponse = async (
 			model: "gpt-3.5-turbo",
 			messages: [{ role: "system", content: promptDefault }, prompt],
 			temperature: 0.7,
-			// eslint-disable-next-line @typescript-eslint/naming-convention
-			max_tokens: 100,
 		});
 
 		const responseData = response.data;
