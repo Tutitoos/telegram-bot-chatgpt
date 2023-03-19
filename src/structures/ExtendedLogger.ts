@@ -1,4 +1,4 @@
-import chalk, { Color } from "chalk";
+import chalk, { type Color } from "chalk";
 import { getFormatDate } from "util-tiempo";
 
 class ExtendedLogger {
@@ -48,6 +48,30 @@ class ExtendedLogger {
 	info(namespace: string, message: string) {
 		this.setColor("blueBright");
 		this.setNamespace(namespace);
+		this.setMessage(message);
+
+		return this.log();
+	}
+
+	database(namespace: "MongoDB" | "Redis", message: string) {
+		this.setColor("greenBright");
+		this.setNamespace(namespace);
+		this.setMessage(message);
+
+		return this.log();
+	}
+
+	openIa(message: string) {
+		this.setColor("cyanBright");
+		this.setNamespace("OpenIA");
+		this.setMessage(message);
+
+		return this.log();
+	}
+
+	chat(message: string) {
+		this.setColor("yellowBright");
+		this.setNamespace("Chat");
 		this.setMessage(message);
 
 		return this.log();

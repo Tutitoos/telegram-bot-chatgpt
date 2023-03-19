@@ -1,6 +1,7 @@
 import connectMongoDb from "../../mongodb/database";
+import { connectOpenIa } from "../../openai/main";
 import { connectRedis } from "../../redis/database";
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { type ExtendedClient, ExtendedEvent } from "../../structures";
 
 class EventBot extends ExtendedEvent {
 	constructor() {
@@ -14,10 +15,11 @@ class EventBot extends ExtendedEvent {
 	async run(client: ExtendedClient): Promise<void> {
 		const { username } = await client.getMe();
 
-		client.logger.info("Bot", `Cliente ${username} conectado`);
+		client.logger.info("Bot", `Cliente ${username ?? "unknown"} conectado`);
 
 		await connectMongoDb(client);
 		await connectRedis(client);
+		connectOpenIa(client);
 	}
 }
 

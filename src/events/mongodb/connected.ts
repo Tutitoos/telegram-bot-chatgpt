@@ -1,6 +1,6 @@
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { type ExtendedClient, ExtendedEvent } from "../../structures";
 
-class EventMongoDB extends ExtendedEvent {
+class EventMongoDd extends ExtendedEvent {
 	constructor() {
 		super({
 			name: "connected",
@@ -10,8 +10,8 @@ class EventMongoDB extends ExtendedEvent {
 	}
 
 	async run(client: ExtendedClient): Promise<void> {
-		client.logger.info("MongoDB", "Base de datos conectada");
+		client.logger.database("MongoDB", "Base de datos conectada");
 	}
 }
 
-export default EventMongoDB;
+export default EventMongoDd;

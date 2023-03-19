@@ -1,4 +1,4 @@
-import ExtendedClient from "./ExtendedClient";
+import type ExtendedClient from "./ExtendedClient";
 
 interface EventStrcuture {
 	name: string;

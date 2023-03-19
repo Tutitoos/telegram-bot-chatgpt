@@ -1,11 +1,11 @@
-import { ExtendedClient } from "../structures";
+import { type ExtendedClient } from "../structures";
 import environments from "../utils/environments";
 import { Message } from "./models";
 import {
-	RedisClientType,
-	RedisFunctions,
-	RedisModules,
-	RedisScripts,
+	type RedisClientType,
+	type RedisFunctions,
+	type RedisModules,
+	type RedisScripts,
 	createClient,
 } from "redis";
 
@@ -30,7 +30,7 @@ export const connectRedis = async (client: ExtendedClient): Promise<void> => {
 		await redisClient.connect();
 
 		client.redis = {
-			Message: new Message(client.redisClient),
+			message: new Message(client.redisClient),
 		};
 	} catch (error: unknown) {
 		const { message } = error as Error;

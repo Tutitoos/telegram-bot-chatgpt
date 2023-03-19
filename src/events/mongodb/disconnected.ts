@@ -1,6 +1,6 @@
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { type ExtendedClient, ExtendedEvent } from "../../structures";
 
-class EventMongoDB extends ExtendedEvent {
+class EventMongoDd extends ExtendedEvent {
 	constructor() {
 		super({
 			name: "uncaughtException",
@@ -14,4 +14,4 @@ class EventMongoDB extends ExtendedEvent {
 	}
 }
 
-export default EventMongoDB;
+export default EventMongoDd;

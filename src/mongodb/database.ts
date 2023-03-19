@@ -1,4 +1,4 @@
-import { ExtendedClient } from "../structures";
+import { type ExtendedClient } from "../structures";
 import environments from "../utils/environments";
 import mongoose from "mongoose";
 

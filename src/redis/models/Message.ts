@@ -6,30 +6,28 @@ interface MessageProps {
 }
 
 class Message {
-	redis: RedisClient;
 	key: string | undefined;
 	value: string | undefined;
 
-	constructor(redis: RedisClient) {
+	constructor(public redis: RedisClient) {
 		this.redis = redis;
 	}
 
-	create({ key, value }: MessageProps): Promise<string | null> {
+	async create({ key, value }: MessageProps): Promise<string | null> {
 		this.key = key;
 		this.value = value;
 
 		return this.redis.set(this.key, this.value);
 	}
 
-	get(key: string): Promise<string | null> {
+	async get(key: string): Promise<string | null> {
 		return this.redis.get(key);
 	}
 
 	async getAll() {
 		const dataList: unknown[] = [];
 
-		const interators = await this.redis.scanIterator();
-		for await (const interator of interators) {
+		for await (const interator of this.redis.scanIterator()) {
 			const data = await this.redis.get(interator);
 			dataList.push(data);
 		}

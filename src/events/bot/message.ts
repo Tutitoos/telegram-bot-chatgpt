@@ -1,8 +1,9 @@
 import { generateResponse } from "../../openai/main";
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { ExtendedEvent } from "../../structures";
+import type { ExtendedClient } from "../../structures";
 import environments from "../../utils/environments";
 import { classifyMessage } from "../../utils/managePrompt";
-import TelegramBot from "node-telegram-bot-api";
+import type TelegramBot from "node-telegram-bot-api";
 import type { EditMessageTextOptions } from "node-telegram-bot-api";
 
 const { allowedUsers } = environments;
@@ -22,7 +23,7 @@ class EventBot extends ExtendedEvent {
 		const message = msg.text!;
 
 		if (!(userId || allowedUsers.includes(userId))) return;
-		client.logger.info("Bot", `Message from ${userId} (${chatId}): ${message}`);
+		client.logger.chat(`Message from ${userId} (${chatId}): ${message}`);
 
 		const loaderMessage = (await client.sendMessage(
 			chatId,
@@ -30,22 +31,43 @@ class EventBot extends ExtendedEvent {
 		)) as EditMessageTextOptions;
 		loaderMessage.chat_id = chatId;
 
-		let response = await client.redis.Message.get(message);
-		if (!response) {
-			const classification = await classifyMessage(message);
-			response = await generateResponse(message, classification);
+		const { tokens, moderate } = await classifyMessage(message);
 
-			if (!response) {
-				throw new Error("Invalid response");
-			}
+		if (tokens >= 3000) {
+			await client.editMessageText(
+				"El mensaje es demasiado largo",
+				loaderMessage,
+			);
+			return;
+		}
 
-			await client.redis.Message.create({
-				key: message,
-				value: response,
-			});
+		if (moderate) {
+			await client.editMessageText(
+				"Lo siento, no puedo proporcionar contenido inapropiado. Como asistente de IA, estoy diseñado para proporcionar ayuda y responder preguntas relacionadas con informática, programación, arquitectura, ciencia y otros temas apropiados. ¿Hay alguna pregunta en particular que pueda ayudarte con respecto a estos temas?",
+				loaderMessage,
+			);
+			return;
 		}
 
 		try {
+			let response = await client.redis.message.get(message);
+			if (!response) {
+				response = await generateResponse(message);
+
+				if (!response) {
+					await client.editMessageText(
+						"TutitoosBot no te está respondiendo? Es posible que esté experimentando algún tipo de problema técnico en ese momento. A veces, estos problemas pueden ser temporales y pueden resolverse por sí solos después de un tiempo.",
+						loaderMessage,
+					);
+					return;
+				}
+
+				await client.redis.message.create({
+					key: message,
+					value: response,
+				});
+			}
+
 			await client.editMessageText(response, loaderMessage);
 		} catch (error: unknown) {
 			const { message } = error as Error;

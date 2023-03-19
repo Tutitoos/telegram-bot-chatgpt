@@ -1,7 +1,7 @@
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { type ExtendedClient, ExtendedEvent } from "../../structures";
 import type { MongooseError } from "mongoose";
 
-class EventMongoDB extends ExtendedEvent {
+class EventMongoDb extends ExtendedEvent {
 	constructor() {
 		super({
 			name: "error",
@@ -18,4 +18,4 @@ class EventMongoDB extends ExtendedEvent {
 	}
 }
 
-export default EventMongoDB;
+export default EventMongoDb;

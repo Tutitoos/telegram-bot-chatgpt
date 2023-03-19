@@ -1,24 +1,26 @@
 import registerEvents from "../handlers/registerEvents";
 import mongoDbModels from "../mongodb/models";
-import { RedisClient, redisClient } from "../redis/database";
-import { Message } from "../redis/models";
+import { type RedisClient, redisClient } from "../redis/database";
+import { type Message } from "../redis/models";
 import type ExtendedEvent from "./ExtendedEvent";
 import ExtendedLogger from "./ExtendedLogger";
 import TelegramBot from "node-telegram-bot-api";
 import type { ConstructorOptions } from "node-telegram-bot-api";
 
 class ExtendedClient extends TelegramBot {
+	isReadyClient: boolean;
 	logger: ExtendedLogger;
 	events: Map<string, ExtendedEvent>;
 	mongodb: typeof mongoDbModels;
 	redisClient: RedisClient;
 	redis: {
-		Message: Message;
+		message: Message;
 	};
 
 	constructor(token: string, props: ConstructorOptions) {
 		super(token, props);
 
+		this.isReadyClient = false;
 		this.logger = new ExtendedLogger();
 		this.events = new Map();
 		this.mongodb = mongoDbModels;
@@ -27,7 +29,12 @@ class ExtendedClient extends TelegramBot {
 
 	async run(): Promise<void> {
 		await registerEvents(this);
-		this.emit("ready");
+		setTimeout(() => {
+			if (!this.isReadyClient) {
+				this.isReadyClient = true;
+				this.emit("ready");
+			}
+		}, 2000);
 	}
 }
 

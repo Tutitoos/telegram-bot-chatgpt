@@ -1,5 +1,5 @@
 import Prompt from "./Prompt";
 
 export default {
-	Prompt,
+	prompt: Prompt,
 };

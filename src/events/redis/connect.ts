@@ -1,4 +1,4 @@
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { type ExtendedClient, ExtendedEvent } from "../../structures";
 
 class EventRedis extends ExtendedEvent {
 	constructor() {
@@ -10,7 +10,7 @@ class EventRedis extends ExtendedEvent {
 	}
 
 	async run(client: ExtendedClient): Promise<void> {
-		client.logger.info("Redis", "Base de datos conectada");
+		client.logger.database("Redis", "Base de datos conectada");
 	}
 }
 

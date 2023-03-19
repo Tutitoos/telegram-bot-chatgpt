@@ -1,25 +1,19 @@
 import "dotenv/config";
 
-const {
-	OPENAI_KEY,
-	BOT_TOKEN,
-	ALLOWED_USERS,
-	MONGODB_URI,
-	MONGODB_NAME,
-	REDIS_HOST,
-	REDIS_PORT,
-	REDIS_PASSWORD,
-} = process.env;
+const getVariable = (name: string) => process.env[name] ?? "unknown";
 
 const environments = {
-	openaiKey: OPENAI_KEY!,
-	botToken: BOT_TOKEN!,
-	allowedUsers: ALLOWED_USERS?.split(",").map((user) => +user) || [],
-	mongodbUri: MONGODB_URI!,
-	mongodbName: MONGODB_NAME!,
-	redisHost: REDIS_HOST!,
-	redisPort: +REDIS_PORT!,
-	redisPassword: REDIS_PASSWORD!,
+	openaiKey: getVariable("OPENAI_KEY"),
+	botToken: getVariable("BOT_TOKEN"),
+	allowedUsers:
+		getVariable("ALLOWED_USERS")
+			.split(",")
+			.map((user) => Number(user)) ?? [],
+	mongodbUri: getVariable("MONGODB_URI"),
+	mongodbName: getVariable("MONGODB_NAME"),
+	redisHost: getVariable("REDIS_HOST"),
+	redisPort: Number(getVariable("REDIS_PORT")),
+	redisPassword: getVariable("REDIS_PASSWORD"),
 };
 
 export default environments;

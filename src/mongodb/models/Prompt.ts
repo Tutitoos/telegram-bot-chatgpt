@@ -15,6 +15,4 @@ const promptSchema = new Schema({
 	},
 });
 
-const Prompt = model("Prompt", promptSchema, "prompts");
-
-export default Prompt;
+export default model("Prompt", promptSchema, "prompts");

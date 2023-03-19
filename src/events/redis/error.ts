@@ -1,4 +1,4 @@
-import { ExtendedClient, ExtendedEvent } from "../../structures";
+import { type ExtendedClient, ExtendedEvent } from "../../structures";
 
 class EventRedis extends ExtendedEvent {
 	constructor() {
